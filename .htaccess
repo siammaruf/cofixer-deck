@@ -1,9 +1,10 @@
 AuthType Basic
 AuthName "CoFixer Deck - Restricted Access"
 AuthUserFile /usr/local/apache2/htdocs/.htpasswd
-Require valid-user
 
-# Allow health checks without authentication
-<FilesMatch "^(health\.html|health)$">
-    Require all granted
-</FilesMatch>
+SetEnvIf Request_URI "^/health\.html$" noauth
+
+<RequireAny>
+    Require env noauth
+    Require valid-user
+</RequireAny>
